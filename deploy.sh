@@ -86,20 +86,45 @@ fi
 
 # 5. Git Operations
 echo "📦 Git Operations..."
+
+# Detect current branch
+CURRENT_BRANCH=$(git branch --show-current)
+echo "   Current branch: $CURRENT_BRANCH"
+
 git add "$CONFIG_FILE"
 
-# Only commit if there are changes
-if git diff --staged --quiet; then
-    echo "   No changes to commit (URL hasn't changed)."
-    # Optional: Force push if you want to trigger build anyway? 
-    # For now, let's assume we proceed to push if user wants to trigger build
+# Check for other changes
+if [ -n "$(git status --porcelain)" ]; then
+    echo "⚠️  There are uncommitted changes in the repository:"
+    git status --short
+    
+    read -p "❓ Do you want to commit ALL changes and push? (y/n): " -n 1 -r
+    echo    # Move to a new line
+    
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "   Staging all changes..."
+        git add .
+        git commit -m "Auto-deploy update: $NGROK_URL"
+        echo "   Committed all changes."
+        
+        echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
+        git push origin "$CURRENT_BRANCH"
+    else
+        echo "⚠️  Skipping push of other changes. Only local config updated."
+        exit 0
+    fi
 else
-    git commit -m "Update API URL to $NGROK_URL"
-    echo "   Committed changes."
+    # Only config file changed or no changes at all
+    if git diff --staged --quiet; then
+        echo "   No changes to commit (URL hasn't changed & no other changes)."
+    else
+        git commit -m "Update API URL to $NGROK_URL"
+        echo "   Committed config changes."
+        
+        echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
+        git push origin "$CURRENT_BRANCH"
+    fi
 fi
-
-echo "🚀 Pushing to GitHub..."
-git push origin main
 
 echo "✨ Deploy sequence complete!"
 echo "   - Backend running on port 8081"

@@ -8,3 +8,15 @@ INFO:     Waiting for application startup.
 2025-12-24 18:47:40,171 INFO sqlalchemy.engine.Engine [raw sql] ()
 2025-12-24 18:47:40,172 INFO sqlalchemy.engine.Engine COMMIT
 INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [36908]
+INFO:     Started server process [42564]
+INFO:     Waiting for application startup.
+2025-12-24 18:50:33,423 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-24 18:50:33,423 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("todo")
+2025-12-24 18:50:33,423 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-24 18:50:33,423 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Application startup complete.

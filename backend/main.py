@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from typing import Optional
 import os
 
-# Define the Todo model
+# Define the Todo model 
 class Todo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(index=True)
