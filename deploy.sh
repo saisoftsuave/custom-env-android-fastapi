@@ -116,19 +116,33 @@ if [ -n "$(git status --porcelain)" ]; then
 else
     # Only config file changed or no changes at all
     if git diff --staged --quiet; then
-        echo "   No changes to commit (URL hasn't changed & no other changes)."
+        echo "   No new changes to commit."
     else
         git commit -m "Update API URL to $NGROK_URL"
         echo "   Committed config changes."
-        
-        echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
-        git push origin "$CURRENT_BRANCH"
     fi
 fi
 
-echo "✨ Deploy sequence complete!"
-echo "   - Backend running on port 8081"
-echo "   - Ngrok tunneling $NGROK_URL -> localhost:8081"
-echo "   - Android config updated"
-echo "   - Changes pushed to GitHub"
+# Check for unpushed commits and push
+if [ -n "$(git cherry -v)" ]; then
+    echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
+    if git push origin "$CURRENT_BRANCH"; then
+        echo "✨ Deploy sequence complete!"
+        echo "   - Backend running on port 8081"
+        echo "   - Ngrok tunneling $NGROK_URL -> localhost:8081"
+        echo "   - Android config updated"
+        echo "   - Changes pushed to GitHub"
+    else
+        echo "❌ Error: Git push failed."
+        echo "   Possible reasons:"
+        echo "   1. Repository URL is incorrect (git remote -v)"
+        echo "   2. You are not authenticated (try 'gh auth login' or check your tokens)"
+        echo "   3. Repository does not exist"
+        exit 1
+    fi
+else
+    echo "✨ Nothing to push. Everything is up to date."
+    echo "   - Backend running on port 8081"
+    echo "   - Ngrok tunneling $NGROK_URL -> localhost:8081"
+fi
 
