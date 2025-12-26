@@ -18,9 +18,9 @@ data class GitHubAsset(
 )
 
 interface GitHubApiService {
-    @GET("repos/{owner}/{repo}/releases/latest")
-    suspend fun getLatestRelease(
+    @GET("repos/{owner}/{repo}/releases")
+    suspend fun getReleases(
         @Path("owner") owner: String,
         @Path("repo") repo: String
-    ): Response<GitHubRelease>
+    ): Response<List<GitHubRelease>>
 }

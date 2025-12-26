@@ -21,10 +21,11 @@ class UpdateManager(private val context: Context) {
     suspend fun checkForUpdate(owner: String, repo: String): String? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = GitHubClient.api.getLatestRelease(owner, repo)
+                val response = GitHubClient.api.getReleases(owner, repo)
                 if (response.isSuccessful) {
-                    val release = response.body()
-                    val tagName = release?.tagName ?: return@withContext null
+                    val releases = response.body()
+                    val latestRelease = releases?.firstOrNull() ?: return@withContext null
+                    val tagName = latestRelease.tagName
                     
                     // Parse "debug-42" -> 42
                     val remoteBuildId = tagName.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
@@ -34,7 +35,7 @@ class UpdateManager(private val context: Context) {
                     
                     if (remoteBuildId > currentBuildId) {
                         // Return download URL of the first apk asset
-                        return@withContext release.assets.find { it.name.endsWith(".apk") }?.downloadUrl
+                        return@withContext latestRelease.assets.find { it.name.endsWith(".apk") }?.downloadUrl
                     }
                 }
             } catch (e: Exception) {
