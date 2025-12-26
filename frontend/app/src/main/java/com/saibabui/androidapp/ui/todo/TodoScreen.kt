@@ -33,12 +33,25 @@ private val AccentRed = Color(0xFFEF5350)
 private val TextPrimary = Color(0xFFE1E1E6)
 private val TextSecondary = Color(0xFF9E9EA7)
 
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.animation.AnimatedVisibility
+import com.saibabui.androidapp.utils.UpdateManager
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoScreen(
     viewModel: TodoViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val updateManager = remember { UpdateManager(context) }
+    var updateUrl by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        updateUrl = updateManager.checkForUpdate("saisoftsuave", "custom-env-android-fastapi")
+    }
     
     Box(
         modifier = Modifier
@@ -108,8 +121,55 @@ fun TodoScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                when {
-                    uiState.isLoading && uiState.todos.isEmpty() -> {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Update Banner
+                    AnimatedVisibility(visible = updateUrl != null) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            colors = CardDefaults.cardColors(containerColor = GradientStart),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        "Update Available 🚀",
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        "A new version is ready to install.",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = Color.White.copy(alpha = 0.8f)
+                                    )
+                                }
+                                Button(
+                                    onClick = {
+                                        updateUrl?.let { url ->
+                                            updateManager.downloadAndInstall(url)
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.White,
+                                        contentColor = GradientStart
+                                    )
+                                ) {
+                                    Text("Update")
+                                }
+                            }
+                        }
+                    }
+
+                    Box(modifier = Modifier.weight(1f)) {
+                        when {
+                            uiState.isLoading && uiState.todos.isEmpty() -> {
                         CircularProgressIndicator(
                             modifier = Modifier.align(Alignment.Center),
                             color = GradientStart
@@ -138,6 +198,8 @@ fun TodoScreen(
                 }
             }
         }
+    }
+}
         
         // Add Dialog
         if (uiState.showAddDialog) {
