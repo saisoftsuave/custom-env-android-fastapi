@@ -22,6 +22,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.saibabui.androidapp.data.model.Todo
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.animation.AnimatedVisibility
+import com.saibabui.androidapp.utils.UpdateManager
+import kotlinx.coroutines.launch
 
 // Premium color palette
 private val GradientStart = Color(0xFF667eea)
@@ -33,10 +37,7 @@ private val AccentRed = Color(0xFFEF5350)
 private val TextPrimary = Color(0xFFE1E1E6)
 private val TextSecondary = Color(0xFF9E9EA7)
 
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.animation.AnimatedVisibility
-import com.saibabui.androidapp.utils.UpdateManager
-import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

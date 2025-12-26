@@ -18,7 +18,8 @@ android {
         versionName = "1.0"
         
         // Inject GitHub Run Number
-        buildConfigField("int", "BUILD_NUMBER", "Integer.parseInt(System.getenv(\"BUILD_NUMBER\") ?: \"0\")")
+        val buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 0
+        buildConfigField("int", "BUILD_NUMBER", "$buildNumber")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
