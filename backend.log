@@ -164,3 +164,11 @@ FROM todo
 2025-12-26 15:34:53,609 INFO sqlalchemy.engine.Engine [cached since 1.595e+05s ago] ()
 2025-12-26 15:34:53,611 INFO sqlalchemy.engine.Engine ROLLBACK
 INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+INFO:     14.98.153.162:0 - "GET / HTTP/1.1" 404 Not Found
+INFO:     35.205.35.88:0 - "GET / HTTP/1.1" 404 Not Found
+2025-12-26 15:45:23,687 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-26 15:45:23,696 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-26 15:45:23,699 INFO sqlalchemy.engine.Engine [cached since 1.601e+05s ago] ()
+2025-12-26 15:45:23,709 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
