@@ -28,7 +28,11 @@ gh run watch "$RUN_ID"
 echo "📥 Downloading artifact..."
 # Remove existing download if any
 rm -rf app-debug
-gh run download "$RUN_ID" -n app-debug
+rm -f app-debug.apk
+
+# Download to a specific directory to avoid conflicts
+mkdir -p app-debug
+gh run download "$RUN_ID" -n app-debug --dir app-debug
 
 if [ ! -f "app-debug/app-debug.apk" ]; then
     echo "❌ Error: APK file not found in downloaded artifact."
