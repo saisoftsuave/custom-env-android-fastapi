@@ -28,7 +28,7 @@ import androidx.compose.animation.AnimatedVisibility
 import com.saibabui.androidapp.utils.UpdateManager
 import kotlinx.coroutines.launch
 
-// Premium color palette
+// Premium color palette - v17
 private val GradientStart = Color(0xFF667eea)
 
 private val GradientEnd = Color(0xFF764ba2)
