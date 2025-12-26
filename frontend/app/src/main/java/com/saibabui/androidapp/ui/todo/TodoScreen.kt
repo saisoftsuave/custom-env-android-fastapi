@@ -53,9 +53,12 @@ fun TodoScreen(
 
     LaunchedEffect(Unit) {
         val url = updateManager.checkForUpdate("saisoftsuave", "custom-env-android-fastapi")
+        Log.d("TodoScreen", "Update check result: $url")
         if (url != null) {
             updateUrl = url
+            Log.d("TodoScreen", "Starting background download...")
             updateManager.downloadUpdate(url) {
+                Log.d("TodoScreen", "Download callback received, setting isUpdateReady = true")
                 isUpdateReady = true
             }
         }
