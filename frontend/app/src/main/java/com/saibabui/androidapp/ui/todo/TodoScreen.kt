@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 
 // Premium color palette
 private val GradientStart = Color(0xFF667eea)
+
 private val GradientEnd = Color(0xFF764ba2)
 private val CardBackground = Color(0xFF1E1E2E)
 private val CardBorder = Color(0xFF2D2D3D)
