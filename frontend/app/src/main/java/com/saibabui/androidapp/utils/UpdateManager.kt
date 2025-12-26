@@ -23,6 +23,7 @@ class UpdateManager(private val context: Context) {
             try {
                 val response = GitHubClient.api.getReleases(owner, repo)
                 if (response.isSuccessful) {
+                    Log.d("UpdateManager", "Response: ${response.body()}")
                     val releases = response.body()
                     val latestRelease = releases?.firstOrNull() ?: return@withContext null
                     val tagName = latestRelease.tagName
@@ -45,23 +46,22 @@ class UpdateManager(private val context: Context) {
         }
     }
 
-    fun downloadAndInstall(url: String) {
+    fun downloadUpdate(url: String, onComplete: () -> Unit) {
         val request = DownloadManager.Request(Uri.parse(url))
-            .setTitle("Downloading Update")
-            .setDescription("Downloading latest version of Todo App...")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "update.apk")
+            .setTitle("Todo App Update")
+            .setDescription("Downloading latest version...")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN) // Hide from notification bar for a cleaner feel
+            .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "update.apk")
             .setMimeType("application/vnd.android.package-archive")
 
         val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
 
-        // Register receiver for when download completes
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(ctxt: Context?, intent: Intent?) {
                 val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (id == downloadId) {
-                    installApk(downloadId)
+                    onComplete()
                     context.unregisterReceiver(this)
                 }
             }
@@ -74,11 +74,14 @@ class UpdateManager(private val context: Context) {
         )
     }
 
-    private fun installApk(downloadId: Long) {
-        val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val uri = manager.getUriForDownloadedFile(downloadId)
-        
-        if (uri != null) {
+    fun promptInstall() {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "update.apk")
+        if (file.exists()) {
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(uri, "application/vnd.android.package-archive")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

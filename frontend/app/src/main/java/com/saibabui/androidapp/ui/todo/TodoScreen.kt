@@ -49,9 +49,16 @@ fun TodoScreen(
     val scope = rememberCoroutineScope()
     val updateManager = remember { UpdateManager(context) }
     var updateUrl by remember { mutableStateOf<String?>(null) }
+    var isUpdateReady by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        updateUrl = updateManager.checkForUpdate("saisoftsuave", "custom-env-android-fastapi")
+        val url = updateManager.checkForUpdate("saisoftsuave", "custom-env-android-fastapi")
+        if (url != null) {
+            updateUrl = url
+            updateManager.downloadUpdate(url) {
+                isUpdateReady = true
+            }
+        }
     }
     
     Box(
@@ -141,28 +148,32 @@ fun TodoScreen(
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        "Update Available 🚀",
+                                        if (isUpdateReady) "Update Ready 🚀" else "Downloading Update... ⏳",
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
                                     Text(
-                                        "A new version is ready to install.",
+                                        if (isUpdateReady) "Tap to install the latest version." else "A new version is being pulled in background.",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = Color.White.copy(alpha = 0.8f)
                                     )
                                 }
-                                Button(
-                                    onClick = {
-                                        updateUrl?.let { url ->
-                                            updateManager.downloadAndInstall(url)
-                                        }
-                                    },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.White,
-                                        contentColor = GradientStart
+                                if (isUpdateReady) {
+                                    Button(
+                                        onClick = { updateManager.promptInstall() },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color.White,
+                                            contentColor = GradientStart
+                                        )
+                                    ) {
+                                        Text("Install")
+                                    }
+                                } else {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(24.dp),
+                                        color = Color.White,
+                                        strokeWidth = 2.dp
                                     )
-                                ) {
-                                    Text("Update")
                                 }
                             }
                         }
