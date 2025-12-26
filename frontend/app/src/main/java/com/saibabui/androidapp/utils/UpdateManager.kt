@@ -73,8 +73,21 @@ class UpdateManager(private val context: Context) {
             override fun onReceive(ctxt: Context?, intent: Intent?) {
                 val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (id == downloadId) {
-                    Log.d("UpdateManager", "Download complete!")
-                    onComplete()
+                    val query = DownloadManager.Query().setFilterById(downloadId)
+                    val cursor = manager.query(query)
+                    if (cursor.moveToFirst()) {
+                        val statusIdx = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+                        val status = cursor.getInt(statusIdx)
+                        if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                            Log.d("UpdateManager", "Download successful for ID: $downloadId")
+                            onComplete()
+                        } else {
+                            val reasonIdx = cursor.getColumnIndex(DownloadManager.COLUMN_REASON)
+                            val reason = cursor.getInt(reasonIdx)
+                            Log.e("UpdateManager", "Download failed (ID: $downloadId) with status $status and reason $reason")
+                        }
+                    }
+                    cursor.close()
                     context.unregisterReceiver(this)
                 }
             }
@@ -84,7 +97,7 @@ class UpdateManager(private val context: Context) {
             context,
             receiver,
             IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
-            ContextCompat.RECEIVER_NOT_EXPORTED
+            ContextCompat.RECEIVER_EXPORTED
         )
     }
 
