@@ -52,6 +52,7 @@ fun TodoScreen(
     val updateManager = remember { UpdateManager(context) }
     var updateUrl by remember { mutableStateOf<String?>(null) }
     var isUpdateReady by remember { mutableStateOf(false) }
+    var showCompletedScreen by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         val url = updateManager.checkForUpdate("saisoftsuave", "custom-env-android-fastapi")
@@ -95,7 +96,7 @@ fun TodoScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "My Tasks",
+                                text = if (showCompletedScreen) "Completed" else "My Tasks",
                                 fontWeight = FontWeight.Bold,
                                 color = TextPrimary
                             )
@@ -104,13 +105,46 @@ fun TodoScreen(
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent
                     ),
+                    navigationIcon = {
+                        if (showCompletedScreen) {
+                            IconButton(onClick = { showCompletedScreen = false }) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Back",
+                                    tint = TextSecondary
+                                )
+                            }
+                        }
+                    },
                     actions = {
-                        IconButton(onClick = { viewModel.loadTodos() }) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh",
-                                tint = TextSecondary
-                            )
+                        if (!showCompletedScreen) {
+                            val completedCount = uiState.todos.count { it.completed }
+                            if (completedCount > 0) {
+                                Button(
+                                    onClick = { showCompletedScreen = true },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = AccentGreen.copy(alpha = 0.2f),
+                                        contentColor = AccentGreen
+                                    ),
+                                    shape = RoundedCornerShape(12.dp),
+                                    modifier = Modifier.padding(end = 8.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text("$completedCount")
+                                }
+                            }
+                            IconButton(onClick = { viewModel.loadTodos() }) {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = "Refresh",
+                                    tint = TextSecondary
+                                )
+                            }
                         }
                     }
                 )
@@ -185,38 +219,50 @@ fun TodoScreen(
                     }
 
                     Box(modifier = Modifier.weight(1f)) {
+                        val filteredTodos = if (showCompletedScreen) {
+                            uiState.todos.filter { it.completed }
+                        } else {
+                            uiState.todos.filter { !it.completed }
+                        }
+                        
                         when {
                             uiState.isLoading && uiState.todos.isEmpty() -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = GradientStart
-                        )
-                    }
-                    uiState.error != null && uiState.todos.isEmpty() -> {
-                        ErrorState(
-                            message = uiState.error!!,
-                            onRetry = { viewModel.loadTodos() },
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    uiState.todos.isEmpty() -> {
-                        EmptyState(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    else -> {
-                        TodoList(
-                            todos = uiState.todos,
-                            onToggleCompleted = { viewModel.toggleTodoCompleted(it) },
-                            onEdit = { viewModel.showEditDialog(it) },
-                            onDelete = { viewModel.deleteTodo(it) }
-                        )
+                                CircularProgressIndicator(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    color = GradientStart
+                                )
+                            }
+                            uiState.error != null && uiState.todos.isEmpty() -> {
+                                ErrorState(
+                                    message = uiState.error!!,
+                                    onRetry = { viewModel.loadTodos() },
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
+                            filteredTodos.isEmpty() -> {
+                                if (showCompletedScreen) {
+                                    CompletedEmptyState(
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                } else {
+                                    EmptyState(
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
+                            }
+                            else -> {
+                                TodoList(
+                                    todos = filteredTodos,
+                                    onToggleCompleted = { viewModel.toggleTodoCompleted(it) },
+                                    onEdit = { viewModel.showEditDialog(it) },
+                                    onDelete = { viewModel.deleteTodo(it) }
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
-    }
-}
         
         // Add Dialog
         if (uiState.showAddDialog) {
@@ -519,4 +565,31 @@ private fun AddEditTodoDialog(
             }
         }
     )
+}
+
+@Composable
+private fun CompletedEmptyState(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Default.CheckCircle,
+            contentDescription = null,
+            modifier = Modifier.size(80.dp),
+            tint = AccentGreen.copy(alpha = 0.5f)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "No completed tasks",
+            style = MaterialTheme.typography.titleLarge,
+            color = TextSecondary
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Complete a task to see it here",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary.copy(alpha = 0.7f)
+        )
+    }
 }
