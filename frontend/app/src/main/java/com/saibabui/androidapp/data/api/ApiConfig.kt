@@ -6,5 +6,5 @@ package com.saibabui.androidapp.data.api
  */
 object ApiConfig {
     // TODO: Replace with your ngrok URL (e.g., "https://xxxx-xxxx.ngrok.io")
-    const val BASE_URL = "https://462ada24adce.ngrok-free.app"
+    const val BASE_URL = "https://babdf5e91841.ngrok-free.app"
 }
