@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-12-29 14:48:19",
+  "total_steps": 2,
+  "passed": 2,
+  "failed": 0,
+  "success_rate": "100.0%",
+  "results": [
+    {
+      "step": "Wait for app to load",
+      "action": "wait",
+      "status": "passed",
+      "screenshot": "test_results/completed_tasks_screen_feature_20251229_144809/144815_01_app_loaded.png"
+    },
+    {
+      "step": "Capture home screen",
+      "action": "screenshot",
+      "status": "passed",
+      "screenshot": "test_results/completed_tasks_screen_feature_20251229_144809/144817_02_home_screen.png"
+    }
+  ],
+  "screenshots": [
+    "test_results/completed_tasks_screen_feature_20251229_144809/144815_01_app_loaded.png",
+    "test_results/completed_tasks_screen_feature_20251229_144809/144817_02_home_screen.png"
+  ]
+}

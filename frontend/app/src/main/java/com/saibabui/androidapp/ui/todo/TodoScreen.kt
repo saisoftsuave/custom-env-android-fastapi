@@ -145,6 +145,23 @@ fun TodoScreen(
                                     tint = TextSecondary
                                 )
                             }
+                        } else {
+                            // Clear all completed button
+                            val completedCount = uiState.todos.count { it.completed }
+                            if (completedCount > 0) {
+                                IconButton(onClick = { 
+                                    // Delete all completed tasks
+                                    uiState.todos.filter { it.completed }.forEach { todo ->
+                                        viewModel.deleteTodo(todo)
+                                    }
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Clear All",
+                                        tint = AccentRed
+                                    )
+                                }
+                            }
                         }
                     }
                 )
@@ -225,6 +242,71 @@ fun TodoScreen(
                             uiState.todos.filter { !it.completed }
                         }
                         
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            // Statistics header for completed screen
+                            if (showCompletedScreen && filteredTodos.isNotEmpty()) {
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = AccentGreen.copy(alpha = 0.15f)
+                                    ),
+                                    shape = RoundedCornerShape(16.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(16.dp),
+                                        horizontalArrangement = Arrangement.SpaceAround,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        // Completed count
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            Text(
+                                                text = "${filteredTodos.size}",
+                                                style = MaterialTheme.typography.headlineMedium,
+                                                fontWeight = FontWeight.Bold,
+                                                color = AccentGreen
+                                            )
+                                            Text(
+                                                text = "Completed",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = TextSecondary
+                                            )
+                                        }
+                                        
+                                        // Divider
+                                        Box(
+                                            modifier = Modifier
+                                                .width(1.dp)
+                                                .height(40.dp)
+                                                .background(TextSecondary.copy(alpha = 0.3f))
+                                        )
+                                        
+                                        // Completion rate
+                                        val totalTasks = uiState.todos.size
+                                        val completionRate = if (totalTasks > 0) {
+                                            (filteredTodos.size * 100) / totalTasks
+                                        } else 0
+                                        
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            Text(
+                                                text = "$completionRate%",
+                                                style = MaterialTheme.typography.headlineMedium,
+                                                fontWeight = FontWeight.Bold,
+                                                color = AccentGreen
+                                            )
+                                            Text(
+                                                text = "Rate",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = TextSecondary
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        
                         when {
                             uiState.isLoading && uiState.todos.isEmpty() -> {
                                 CircularProgressIndicator(
@@ -258,6 +340,8 @@ fun TodoScreen(
                                     onDelete = { viewModel.deleteTodo(it) }
                                 )
                             }
+                            }
+                        }
                         }
                     }
                 }
