@@ -98,21 +98,14 @@ if [ -n "$(git status --porcelain)" ]; then
     echo "⚠️  There are uncommitted changes in the repository:"
     git status --short
     
-    read -p "❓ Do you want to commit ALL changes and push? (y/n): " -n 1 -r
-    echo    # Move to a new line
+    # Auto-commit for automation (no prompt)
+    echo "📦 Auto-committing all changes..."
+    git add .
+    git commit -m "Auto-deploy update: $NGROK_URL"
+    echo "   ✅ Committed all changes."
     
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo "   Staging all changes..."
-        git add .
-        git commit -m "Auto-deploy update: $NGROK_URL"
-        echo "   Committed all changes."
-        
-        echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
-        git push origin "$CURRENT_BRANCH"
-    else
-        echo "⚠️  Skipping push of other changes. Only local config updated."
-        exit 0
-    fi
+    echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
+    git push origin "$CURRENT_BRANCH"
 else
     # Only config file changed or no changes at all
     if git diff --staged --quiet; then

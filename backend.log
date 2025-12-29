@@ -8,3 +8,146 @@ INFO:     Waiting for application startup.
 2025-12-29 14:20:41,502 INFO sqlalchemy.engine.Engine [raw sql] ()
 2025-12-29 14:20:41,502 INFO sqlalchemy.engine.Engine COMMIT
 INFO:     Application startup complete.
+2025-12-29 14:23:02,339 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:02,345 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:02,345 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ()
+2025-12-29 14:23:02,348 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:23:51,183 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:51,192 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:51,197 INFO sqlalchemy.engine.Engine [cached since 48.85s ago] ()
+2025-12-29 14:23:51,203 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:23:52,012 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:52,014 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:52,014 INFO sqlalchemy.engine.Engine [cached since 49.67s ago] ()
+2025-12-29 14:23:52,018 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:23:52,142 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:52,142 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:52,142 INFO sqlalchemy.engine.Engine [cached since 49.8s ago] ()
+2025-12-29 14:23:52,144 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:23:52,339 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:52,339 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:52,339 INFO sqlalchemy.engine.Engine [cached since 49.99s ago] ()
+2025-12-29 14:23:52,340 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:23:52,508 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:23:52,508 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:23:52,508 INFO sqlalchemy.engine.Engine [cached since 50.16s ago] ()
+2025-12-29 14:23:52,508 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:31:43,647 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,650 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,658 INFO sqlalchemy.engine.Engine SELECT todo.id AS todo_id, todo.title AS todo_title, todo.description AS todo_description, todo.completed AS todo_completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:43,658 INFO sqlalchemy.engine.Engine SELECT todo.id AS todo_id, todo.title AS todo_title, todo.description AS todo_description, todo.completed AS todo_completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:43,658 INFO sqlalchemy.engine.Engine [generated in 0.00046s] (2,)
+2025-12-29 14:31:43,658 INFO sqlalchemy.engine.Engine [cached since 0.0009621s ago] (2,)
+2025-12-29 14:31:43,680 INFO sqlalchemy.engine.Engine UPDATE todo SET description=? WHERE todo.id = ?
+2025-12-29 14:31:43,680 INFO sqlalchemy.engine.Engine UPDATE todo SET description=? WHERE todo.id = ?
+2025-12-29 14:31:43,680 INFO sqlalchemy.engine.Engine [generated in 0.00017s] ('afasf', 2)
+2025-12-29 14:31:43,680 INFO sqlalchemy.engine.Engine [generated in 0.00008s] ('afasf', 2)
+2025-12-29 14:31:43,681 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-29 14:31:43,682 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine [generated in 0.00009s] (2,)
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:43,683 INFO sqlalchemy.engine.Engine [cached since 0.0002183s ago] (2,)
+2025-12-29 14:31:43,684 INFO sqlalchemy.engine.Engine ROLLBACK
+2025-12-29 14:31:43,684 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "PUT /todos/2 HTTP/1.1" 200 OK
+INFO:     14.98.153.162:0 - "PUT /todos/2 HTTP/1.1" 200 OK
+2025-12-29 14:31:43,919 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,919 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:31:43,919 INFO sqlalchemy.engine.Engine [cached since 521.6s ago] ()
+2025-12-29 14:31:43,920 INFO sqlalchemy.engine.Engine ROLLBACK
+2025-12-29 14:31:43,921 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:43,921 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:31:43,921 INFO sqlalchemy.engine.Engine [cached since 521.6s ago] ()
+2025-12-29 14:31:43,924 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:31:54,386 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:54,387 INFO sqlalchemy.engine.Engine SELECT todo.id AS todo_id, todo.title AS todo_title, todo.description AS todo_description, todo.completed AS todo_completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:54,387 INFO sqlalchemy.engine.Engine [cached since 10.73s ago] (2,)
+2025-12-29 14:31:54,389 INFO sqlalchemy.engine.Engine UPDATE todo SET completed=? WHERE todo.id = ?
+2025-12-29 14:31:54,389 INFO sqlalchemy.engine.Engine [generated in 0.00041s] (1, 2)
+2025-12-29 14:31:54,390 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-29 14:31:54,391 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:54,391 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:54,391 INFO sqlalchemy.engine.Engine [cached since 10.71s ago] (2,)
+2025-12-29 14:31:54,391 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "PUT /todos/2 HTTP/1.1" 200 OK
+2025-12-29 14:31:54,625 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:54,625 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:31:54,625 INFO sqlalchemy.engine.Engine [cached since 532.3s ago] ()
+2025-12-29 14:31:54,625 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:31:54,920 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:54,921 INFO sqlalchemy.engine.Engine SELECT todo.id AS todo_id, todo.title AS todo_title, todo.description AS todo_description, todo.completed AS todo_completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:54,921 INFO sqlalchemy.engine.Engine [cached since 11.26s ago] (3,)
+2025-12-29 14:31:54,921 INFO sqlalchemy.engine.Engine UPDATE todo SET completed=? WHERE todo.id = ?
+2025-12-29 14:31:54,921 INFO sqlalchemy.engine.Engine [cached since 0.532s ago] (1, 3)
+2025-12-29 14:31:54,921 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-29 14:31:54,923 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:54,923 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:54,923 INFO sqlalchemy.engine.Engine [cached since 11.24s ago] (3,)
+2025-12-29 14:31:54,924 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "PUT /todos/3 HTTP/1.1" 200 OK
+2025-12-29 14:31:55,160 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:55,160 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:31:55,160 INFO sqlalchemy.engine.Engine [cached since 532.8s ago] ()
+2025-12-29 14:31:55,160 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+2025-12-29 14:31:57,494 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:57,495 INFO sqlalchemy.engine.Engine SELECT todo.id AS todo_id, todo.title AS todo_title, todo.description AS todo_description, todo.completed AS todo_completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:57,495 INFO sqlalchemy.engine.Engine [cached since 13.84s ago] (3,)
+2025-12-29 14:31:57,496 INFO sqlalchemy.engine.Engine UPDATE todo SET completed=? WHERE todo.id = ?
+2025-12-29 14:31:57,496 INFO sqlalchemy.engine.Engine [cached since 3.107s ago] (0, 3)
+2025-12-29 14:31:57,496 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-29 14:31:57,497 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:57,497 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo 
+WHERE todo.id = ?
+2025-12-29 14:31:57,497 INFO sqlalchemy.engine.Engine [cached since 13.81s ago] (3,)
+2025-12-29 14:31:57,497 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "PUT /todos/3 HTTP/1.1" 200 OK
+2025-12-29 14:31:57,728 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-29 14:31:57,728 INFO sqlalchemy.engine.Engine SELECT todo.id, todo.title, todo.description, todo.completed 
+FROM todo
+2025-12-29 14:31:57,728 INFO sqlalchemy.engine.Engine [cached since 535.4s ago] ()
+2025-12-29 14:31:57,729 INFO sqlalchemy.engine.Engine ROLLBACK
+INFO:     14.98.153.162:0 - "GET /todos/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54923 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55197 - "GET /health HTTP/1.1" 200 OK
